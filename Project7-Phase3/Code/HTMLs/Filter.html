@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Filter Song</h1>
+<div style="background-color: Green; padding: 1%; max-width: 350px; border-radius: 3px; margin: auto; ">
+<form action="/filter?type=year" method="post">
+  <label for="minyear">Min Year:</label>
+  <input type="number" id="minyear" name="minyear" min="1200" max="5000" >
+  <label for="maxyear">Max Year:</label>
+  <input type="number" id="maxyear" name="maxyear" min="1200" max="5000" >
+  <input type="submit">
+</form>
+
+<form action="/filter?type=like" method="post">
+  <label for="minlike">Min Like:</label>
+  <input type="number" id="minlike" name="minlike" min="0" max="5000">
+  <label for="maxlike">Max Like:</label>
+  <input type="number" id="maxlike" name="maxlike" min="0" max="5000">
+  <input type="submit">
+</form>
+<form action="/filter?type=artist" method="post">
+<label for="artistname">Artist Name:</label>
+<input name="artistname" type="text" placeholder="Artist Name" style=" margin: auto; margin-bottom: 10px; padding: 5px; width: 37%;" />
+<input type="submit">
+</form>
+<form action="/filter?type=delete" method="post">
+<label for="deletefilters">Delete Filters:</label>
+ <select name="deletefilters" id="deletefilters">
+    <option value="deletefilters">Yes</option>
+  </select>
+  <input type="submit">
+</form>
+</div>
+
+</body>
+</html>
+

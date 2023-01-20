@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+a:link, a:visited {
+  background-color: #f44336;
+  color: white;
+  padding: 15px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:hover, a:active {
+  background-color: green;
+}
+</style>
+</head>
+  <body style="text-align: center;">
+    <h1>Create A Playlist</h1>
+    <div style="background-color: rgb(207, 71, 30); padding: 1%; max-width: 300px; border-radius: 3px; margin: auto; ">
+      <form action="/createplaylist" method="post">
+        <p>New Playlist</p>
+        <input name="name" type="text" placeholder="Name" style="display:block; margin: auto; margin-bottom: 10px; padding: 5px; width: 94%;" />
+        <label for="publicorprivate">Public Or Private:</label>
+  <select name="publicorprivate" id="publicorprivate">
+    <option value="private">Private</option>
+    <option value="public">Public</option>
+  </select>
+  <br><br>
+        <button type="submit" style="display:block; width: 100%; padding: 7px;">Create</button>
+      </form>
+    </div>
+    <br><a href='login'>Log out</a>
+  </body>
+</html>
+
