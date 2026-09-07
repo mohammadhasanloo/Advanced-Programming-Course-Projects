@@ -48,7 +48,7 @@ map<string, int> savecolumn(vector<string>separatedline)
 	return column;
 }
 
-void readfile(string oneline, vector<Movie>& Movies, int numberofline, map<string, int>column)
+void readfile(string oneline, vector<Movie>& Movies, int, map<string, int>column)
 {
 	vector<string> separatedline = Separator(oneline, ',');
 	Movie OneMovie;
@@ -141,7 +141,7 @@ string checkinput(int& WrongInput, string input)
 		return " ";
 	}
 
-	for (int i = 2; i < Input.size(); i++)
+	for (size_t i = 2; i < Input.size(); i++)
 	{
 		if (i != 2)
 		{
@@ -344,7 +344,7 @@ void dayofweek(int Day, vector<string>& line, string space)
 void InitializeLines(vector<string>& line)
 {
 	string a = " ", space = "";
-	for (int i = 0; i < (line[0].size() - 10); i++)
+	for (size_t i = 0; i + 10 < line[0].size(); i++)
 	{
 		space += a;
 	}
@@ -494,9 +494,10 @@ void printinHTML(vector<vector<Movie> > FinalScheduledPlan,vector<int> NumDailyM
 
 int main(int argc, char *argv[])
 {
-	if(argc < 1)
+	if (argc < 2)
 	{
-		cout << "Enter Schedule file";
+		cerr << "usage: cinema <schedule.csv>" << endl;
+		return 1;
 	}
 	else
 	{
@@ -512,9 +513,10 @@ int main(int argc, char *argv[])
 
 		string input;
 		string inputformat1 = "GET ALL MOVIES";
-		while (1)
+		// Stop at end of input. Looping on a failed getline reprints the last
+		// line's verdict for ever.
+		while (getline(cin, input))
 		{
-			getline(cin,input);
 			if (input == inputformat1)
 			{
 				int SortedMoviesNum = 1;
