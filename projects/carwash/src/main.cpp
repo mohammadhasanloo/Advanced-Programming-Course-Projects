@@ -129,7 +129,7 @@ void Carwash::add_stage()
 void Carwash::show_carwash_info()
 {
 	print_new_cars();
-	for (int i = 0; i < Stages.size(); i++)
+	for (size_t i = 0; i < Stages.size(); i++)
 		Stages[i].show_stage_info(i);
 	print_finished_car();
 }
@@ -143,7 +143,7 @@ void Carwash::add_car()
 
 void Carwash::finish_program()
 {
-	while (CarNum != FinishedCars.size())
+	while (FinishedCars.size() != static_cast<size_t>(CarNum))
 		advance_one_sec();
 	cout << "OK" << endl;
 }
@@ -184,7 +184,7 @@ void Carwash::start_program()
 void Carwash::print_finished_car()
 {
 	cout << "Cars finished:" << endl;
-	for (int i = 0; i < FinishedCars.size(); i++)
+	for (size_t i = 0; i < FinishedCars.size(); i++)
 	{
 		cout << "Car ID: " << FinishedCars[i].get_car_id() << endl;
 		cout << "Luxury coefficient: " << FinishedCars[i].get_luxury_coefficient() << endl;
@@ -195,7 +195,7 @@ void Carwash::print_new_cars()
 {
 	cout << "Passed time: " << Time << endl;
 	cout << "Cars waiting:" << endl;
-	for (int i = 0; i < NewCars.size(); i++)
+	for (size_t i = 0; i < NewCars.size(); i++)
 	{
 		cout << "Car ID: " << NewCars[i].get_car_id() << endl;
 		cout << "Luxury coefficient: " << NewCars[i].get_luxury_coefficient() << endl;
@@ -236,10 +236,10 @@ void Stage::show_stage_info(int StageNum)
 
 	int luxury_coefficient = -1;
 	int car_work_on = -1;
-	for (int i = 0; i < Workers.size(); i++)
+	for (size_t i = 0; i < Workers.size(); i++)
 	{
 		car_work_on = Workers[i].get_car_work_on_id();
-		for (int j = 0; j < WashingCars.size(); j++)
+		for (size_t j = 0; j < WashingCars.size(); j++)
 		{
 			if (car_work_on == WashingCars[j].get_car_id())
 			{
@@ -256,7 +256,7 @@ void Stage::show_stage_info(int StageNum)
 
 void Stage::print_waiting_cars()
 {
-	for (int i = 0; i < WaitingCars.size(); i++)
+	for (size_t i = 0; i < WaitingCars.size(); i++)
 	{
 		cout << "Car ID: " << WaitingCars[i].get_car_id() << endl;
 		cout << "Luxury coefficient: " << WaitingCars[i].get_luxury_coefficient() << endl;
@@ -272,7 +272,7 @@ void Worker::change_worker_info(int lux_coefficient, bool Free, int Car_Id)
 
 void Stage::add_waiting_car_to_worker(Car car)
 {
-	for (int i = 0; i < Workers.size(); i++)
+	for (size_t i = 0; i < Workers.size(); i++)
 	{
 		if (Workers[i].get_free())
 		{
@@ -288,7 +288,7 @@ void Stage::add_waiting_car_to_worker(Car car)
 
 Car Stage::get_free_car(int WorkerNum,Car transmission_car)
 {
-	for (int j = 0; j < WashingCars.size(); j++)
+	for (size_t j = 0; j < WashingCars.size(); j++)
 	{
 		if (WashingCars[j].get_car_id() == Workers[WorkerNum].get_car_work_on_id())
 		{
@@ -305,7 +305,7 @@ Car Stage::get_free_car(int WorkerNum,Car transmission_car)
 
 Car Stage::decrease_time(bool& existence_transmission_car, Car transmission_car)
 {
-	for (int i = 0; i < Workers.size(); i++)
+	for (size_t i = 0; i < Workers.size(); i++)
 	{
 		if (Workers[i].get_time_left() == 0)
 		{
@@ -315,7 +315,7 @@ Car Stage::decrease_time(bool& existence_transmission_car, Car transmission_car)
 		}
 	}
 
-	for (int i = 0; i < Workers.size(); i++)
+	for (size_t i = 0; i < Workers.size(); i++)
 	{
 		if (Workers[i].get_time_left() > 0)
 			Workers[i].decrease_one_sec();
@@ -330,7 +330,7 @@ void Carwash::move_car_to_next_stage(int StageNumber)
 	transmission_car=Stages[StageNumber].decrease_time(existence_transmission_car, transmission_car);
 	if (existence_transmission_car)
 	{
-		if (StageNumber != (Stages.size() - 1))
+		if (static_cast<size_t>(StageNumber) + 1 != Stages.size())
 			Stages[StageNumber + 1].add_car_to_waiting_car(transmission_car);
 		else
 			FinishedCars.push_back(transmission_car);
@@ -339,16 +339,16 @@ void Carwash::move_car_to_next_stage(int StageNumber)
 
 void Carwash::advance_one_sec()
 {
-	for (int i = 0; i < Stages.size(); i++)
+	for (size_t i = 0; i < Stages.size(); i++)
 		move_car_to_next_stage(i);
 
-	for (int i = 0; i < NewCars.size(); i++)
+	for (size_t i = 0; i < NewCars.size(); i++)
 	{
 		Stages[0].add_car_to_waiting_car(NewCars[0]);
 		NewCars.erase(NewCars.begin());
 	}
 
-	for (int i = 0; i < Stages.size(); i++)
+	for (size_t i = 0; i < Stages.size(); i++)
 	{
 		if ((Stages[i].get_free_worker()) && (Stages[i].get_WaitingCarsSize() > 0))
 		{
