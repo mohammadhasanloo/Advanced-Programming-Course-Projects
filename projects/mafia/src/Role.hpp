@@ -28,7 +28,7 @@ public:
 	void make_is_voted_true() { is_voted = true; }
 	void make_is_healed_true() { is_healed=true; }
 	void make_is_silenced_true() { is_silenced=true; }
-	virtual void change_who_silenced(Player* player_votee) {}
+	virtual void change_who_silenced(Player*) {}
 	bool get_is_healed() { return is_healed; }
 	virtual bool change_and_get_second_life() { return false; }
 	void change_information_after_night();

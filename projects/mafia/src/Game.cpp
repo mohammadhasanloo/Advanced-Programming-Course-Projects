@@ -44,14 +44,14 @@ vector<string> Game::separate(string input, char character)
 
 void Game::create_game(vector <string> names)
 {
-	for (int i = 1; i < names.size(); i++)
+	for (size_t i = 1; i < names.size(); i++)
 		player_names.push_back(names[i]);
 	is_game_created = true;
 }
 
 void Game::search_player(string name)
 {
-	for (int i = 0; i < player_names.size(); i++)
+	for (size_t i = 0; i < player_names.size(); i++)
 	{
 		if (name == player_names[i])
 			return;
@@ -88,7 +88,7 @@ void Game::change_mafia_and_villager_number(string new_role,string previous_role
 
 bool Game::check_previous_names(string new_name, string new_role)
 {
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if (players[i]->check_to_find_name(new_name))
 		{
@@ -140,16 +140,17 @@ void Game::check_assign_role_to_all()
 
 string Game::search_curr_player_name(string curr_player_name)
 {
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if (curr_player_name == players[i]->get_player_name())
 			return players[i]->get_player_name() + ": " + players[i]->get_player_role();
 	}
+	throw user_not_joined();
 }
 
 void Game::show_names_and_roles()
 {
-	for (int i = 0; i < player_names.size(); i++)
+	for (size_t i = 0; i < player_names.size(); i++)
 		cout << search_curr_player_name(player_names[i]) << endl;
 }
 
@@ -183,7 +184,7 @@ void Game::check_process_day_error(string voter,string votee)
 {
 	search_player(voter);
 	search_player(votee);
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if ((voter == players[i]->get_player_name()) && (players[i]->get_is_silenced()))
 			throw voter_is_silenced();
@@ -195,13 +196,13 @@ void Game::check_process_day_error(string voter,string votee)
 void Game::process_day(string voter, string votee)
 {
 	Player* votee_player = nullptr;
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if (players[i]->check_to_find_name(votee))
 			votee_player = players[i];
 	}
 
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if (players[i]->check_to_find_name(voter))
 			players[i]->set_new_votee(votee_player);
@@ -210,7 +211,7 @@ void Game::process_day(string voter, string votee)
 
 void Game::check_user_is_dead_fun(string player)
 {
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if ((players[i]->get_player_name() == player) && (players[i]->get_is_dead()))
 			throw user_is_dead();
@@ -226,7 +227,7 @@ bool Game::has_player_act(string role)
 
 void Game::check_mafia_errors(string votee)
 {
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if ((players[i]->get_player_name() == votee) && (players[i]->get_is_dead()))
 			throw votee_already_dead();
@@ -240,7 +241,7 @@ void Game::check_dec_doc_error(string votee,bool is_voted, string role)
 	else if ((is_voted) && (role == DOCTOR))
 		throw doctor_already_healed();
 
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if ((players[i]->get_player_name() == votee) && (players[i]->get_is_dead()) && (role == DETECTIVE))
 			throw suspect_is_dead();
@@ -253,7 +254,7 @@ void Game::check_silencer_errors(string votee, Player* who_silenced)
 {
 	if (who_silenced != nullptr)
 		return;
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if ((players[i]->get_player_name() == votee) && (players[i]->get_is_dead()))
 			throw person_is_dead();
@@ -265,7 +266,7 @@ void Game::start_night_errors(string voter, string votee)
 {
 	check_user_is_dead_fun(voter);
 
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if ((players[i]->get_player_name() == voter) && (!has_player_act(players[i]->get_player_role())))
 			throw cant_wake_up_during_night();
@@ -276,7 +277,7 @@ void Game::start_night_errors(string voter, string votee)
 
 void Game::check_roll_players_errors(string voter, string votee)
 {
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if (players[i]->check_to_find_name(voter))
 		{
@@ -302,13 +303,13 @@ void Game::check_process_night_error(string voter, string votee)
 void Game::process_night(string voter, string votee)
 {
 	Player* votee_player = nullptr;
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if (players[i]->check_to_find_name(votee))
 			votee_player = players[i];
 	}
 
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if (players[i]->check_to_find_name(voter) && (players[i]->get_player_role() == DOCTOR))
 			players[i]->doctor_night_fun(votee_player);
@@ -340,7 +341,7 @@ void Game::process_game(vector <string> names)
 
 bool Game::has_joker_dead_in_day()
 {
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if ((players[i]->get_player_role() == JOKER) && (players[i]->get_has_dead_in_day()))
 			return true;
@@ -369,7 +370,7 @@ void Game::finish_condition_fun()
 
 void Game::count_players_cast_votes(Player* player_votee)
 {
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if (players[i]->get_player_name() == player_votee->get_player_name())
 			players[i]->add_votes_cast_num();
@@ -380,8 +381,7 @@ Player* Game::take_smaller_alphabet_player(Player* previous_player, Player* curr
 {
 	if (previous_player->get_player_name() <= curr_player->get_player_name())
 		return previous_player;
-	if (previous_player->get_player_name() > curr_player->get_player_name())
-		return curr_player;
+	return curr_player;
 }
 
 Player* Game::find_killed_player(Player* previous_player, Player* curr_player)
@@ -405,7 +405,7 @@ void Game::rewrite_new_number_of_roles(string role)
 void Game::write_silenced_players()
 {
 	vector <string> silenced_players;
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if (players[i]->get_is_silenced())
 			silenced_players.push_back(players[i]->get_player_name());
@@ -414,7 +414,7 @@ void Game::write_silenced_players()
 	{
 		cout << "Silenced ";
 		sort(silenced_players.begin(), silenced_players.end());
-		for (int i = 0; i < silenced_players.size(); i++)
+		for (size_t i = 0; i < silenced_players.size(); i++)
 		{
 			cout << silenced_players[i];
 			if (i != (silenced_players.size() - 1))
@@ -461,7 +461,7 @@ void Game::function_after_night(Player* killed_player)
 void Game::delete_killed_player()
 {
 	Player* killed_player = players[0];
-	for (int i = 1; i < players.size(); i++)
+	for (size_t i = 1; i < players.size(); i++)
 		killed_player = find_killed_player(killed_player, players[i]);
 
 	if (is_day)
@@ -479,7 +479,7 @@ void Game::delete_killed_player()
 
 void Game::show_names_and_roles_before_night(string curr_player)/////
 {
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if(curr_player==players[i]->get_player_name())
 			if (!players[i]->get_is_dead() && has_player_act(players[i]->get_player_role()))
@@ -489,7 +489,7 @@ void Game::show_names_and_roles_before_night(string curr_player)/////
 
 void Game::write_role_and_name_before_night()
 {
-	for(int i=0;i<player_names.size();i++)
+	for (size_t i = 0; i < player_names.size(); i++)
 		show_names_and_roles_before_night(player_names[i]);////
 }
 
@@ -498,14 +498,14 @@ void Game::end_vote_fun()
 	day_processing = false;
 	night_num++;
 
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if (players[i]->get_is_voted())
 			count_players_cast_votes(players[i]->get_votee_player());
 	}
 	delete_killed_player();
 
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 		players[i]->change_information_after_day();
 
 	finish_condition_fun();
@@ -523,14 +523,14 @@ void Game::end_night_fun()
 	after_night = true;
 	day_num++;
 
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if ((check_is_role_mafia(players[i]->get_player_role())) && (!players[i]->get_is_dead()))
 			count_players_cast_votes(players[i]->get_votee_player());
 	}
 	delete_killed_player();
 
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 		players[i]->change_information_after_night();
 
 	is_day = true;
@@ -557,7 +557,7 @@ void Game::swap_players_fun(string player1, string player2)
 	bool has_silenced_1=false;
 	bool has_silenced_2=false;
 
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if (players[i]->get_player_name() == player1)
 		{
@@ -571,7 +571,7 @@ void Game::swap_players_fun(string player1, string player2)
 		}
 	}
 
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		if (players[i]->get_player_name() == player1)
 			players[i]->change_info_after_swap(role_2, has_silenced_1);
