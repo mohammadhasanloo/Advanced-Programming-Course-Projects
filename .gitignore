@@ -1,0 +1,11 @@
+build/
+*.o
+*.d
+*.out
+.DS_Store
+
+# Cinema writes a rendered schedule beside itself.
+*.html
+!projects/utunes-server/static/*.html
+!projects/utunes-server/pages/*.html
+!projects/utunes-server/template/*.html
