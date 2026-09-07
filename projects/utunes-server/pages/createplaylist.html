@@ -1,37 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<style>
-a:link, a:visited {
-  background-color: #f44336;
-  color: white;
-  padding: 15px 25px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-}
-
-a:hover, a:active {
-  background-color: green;
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New playlist - uTunes</title>
+  <link rel="stylesheet" href="/styles.css">
 </head>
-  <body style="text-align: center;">
-    <h1>Create A Playlist</h1>
-    <div style="background-color: rgb(207, 71, 30); padding: 1%; max-width: 300px; border-radius: 3px; margin: auto; ">
+<body>
+  <header class="masthead"><div class="inner">
+    <a class="wordmark" href="/home">uTunes</a>
+    <nav>
+      <a href="/home">Songs</a>
+      <a href="/likedsongs">Liked</a>
+      <a href="/playlists">Playlists</a>
+      <a href="/login">Log out</a>
+    </nav>
+  </div></header>
+  <main>
+    <div class="form-card">
+      <h1>New playlist</h1>
       <form action="/createplaylist" method="post">
-        <p>New Playlist</p>
-        <input name="name" type="text" placeholder="Name" style="display:block; margin: auto; margin-bottom: 10px; padding: 5px; width: 94%;" />
-        <label for="publicorprivate">Public Or Private:</label>
-  <select name="publicorprivate" id="publicorprivate">
-    <option value="private">Private</option>
-    <option value="public">Public</option>
-  </select>
-  <br><br>
-        <button type="submit" style="display:block; width: 100%; padding: 7px;">Create</button>
+        <input name="name" type="text" placeholder="Playlist name" required>
+        <select name="publicorprivate">
+          <option value="private">Private</option>
+          <option value="public">Public</option>
+        </select>
+        <input type="submit" value="Create">
       </form>
+      <p class="alt"><a href="/playlists">Back to your playlists</a></p>
     </div>
-    <br><a href='login'>Log out</a>
-  </body>
+  </main>
+</body>
 </html>
-

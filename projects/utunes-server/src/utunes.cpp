@@ -134,11 +134,11 @@ void utunes::add_new_user(string username, string email, string password)
 string utunes::get_body_of_song(song* curr_song)
 {
 	string body;
-	body+="<a href='song?id=";
+	body+="<a class='song-row' href='/song?id=";
 	body+=curr_song->get_id();
-	body+= "'target='_self'>";
+	body+= "'>";
 	body+=curr_song->get_song_info();
-	body+= + "</a><br>";
+	body+= "</a>";
 	return body;	
 }
 
@@ -202,7 +202,7 @@ string utunes::get_playlist_info(string playlist_id)
 {
 	playlist* curr_playlist=search_intended_playlist(playlist_id);
 	string body;
-	body+="<table id='t01'> <tr> <th> Playlist Name </th> <th> Type Of Ownership </th> </tr>";
+	body+="<table> <tr> <th>Playlist</th> <th>Visibility</th> </tr>";
 	body+=curr_playlist->get_curr_playlist_info();
 	body+="</table> <br>";
 
@@ -214,11 +214,11 @@ string utunes::get_curr_song_info(string song_id)
 	song* curr_song=search_curr_song(song_id);
 	string body;
 	bool has_user_liked=user_logged_in->check_liked_curr_song(curr_song);
-	body+="<table id='t01'> <tr> <th> Song Name </th> <th> Artist </th> <th> Year Release </th> <th> Num of Likes </th> <th> Num of Playlists </th> <th>  </th> <th>  </th> </tr>";
+	body+="<table> <tr> <th>Song</th> <th>Artist</th> <th>Year</th> <th>Likes</th> <th>Playlists</th> <th></th> <th></th> </tr>";
 	body+=curr_song->get_curr_song_info(has_user_liked);
 	body+="</table> <br>";
-	body+="<table id='t01'> <tr> <th> Song Name </th> <th> Artist </th> <th> Year Release </th> <th> Confidence </th> <th> Link </th> </tr>";
-	body+="<h2> Recommended Songs </h2>";
+	body+="<h2>Recommended for you</h2>";
+	body+="<table> <tr> <th>Song</th> <th>Artist</th> <th>Year</th> <th>Confidence</th> <th></th> </tr>";
 	body+=get_recommeded_songs(COUNT_OF_RECOMMENDED_SONGS);
 	body+="</table>";
 

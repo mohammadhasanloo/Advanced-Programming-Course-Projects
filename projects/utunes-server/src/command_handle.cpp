@@ -75,6 +75,30 @@ void command_handle::save_liked_songs_in_program(char liked_songs_list[])
 
 
 
+std::string page_head(const std::string& title)
+{
+	return "<!DOCTYPE html><html lang='en'><head>"
+	       "<meta charset='utf-8'>"
+	       "<meta name='viewport' content='width=device-width, initial-scale=1'>"
+	       "<title>" + title + " - uTunes</title>"
+	       "<link rel='stylesheet' href='/styles.css'>"
+	       "</head><body>"
+	       "<header class='masthead'><div class='inner'>"
+	       "<a class='wordmark' href='/home'>uTunes</a>"
+	       "<nav>"
+	       "<a href='/home'>Songs</a>"
+	       "<a href='/likedsongs'>Liked</a>"
+	       "<a href='/playlists'>Playlists</a>"
+	       "<a href='/login'>Log out</a>"
+	       "</nav>"
+	       "</div></header><main>";
+}
+
+std::string page_foot()
+{
+	return "</main></body></html>";
+}
+
 Response* signup_handler::callback(Request* req)
 {
 	string username=req->getBodyParam("username");
@@ -121,20 +145,11 @@ Response* home_handler::callback(Request*)
 
 	res->setHeader("Content-Type", "text/html");
 	string body;
-	body += "<!DOCTYPE html>";
-  	body += "<html>";
-	body += "<head> <style> a:link, a:visited { background-color: white; color: black; border: 2px solid green; padding: 20px 200px; text-align: center; text-decoration: none; display: inline-block; } a:hover, a:active { background-color: green; color: white; } </style> </head>";
-  	body += "<body style=\"text-align: center;\">";
-  	body += "<h1>Utunes</h1>";
-	body += add_filter_html();
+	body += page_head("Songs");
+  	body += "<div class='panel'>" + add_filter_html() + "</div>";
 	body += "<h1>Songs</h1>";
-	body += new_utunes->get_songs();
-	body += "<br> <a href='likedsongs'>Your Liked Songs</a> <br> <br>";
-	body += "<a href='playlists'>Your Playlists</a> <br> <br>";
-	body += " <br> <a href='login'>Log out</a> <br> <br>";
-  	body += "</body>";
-  	body += "</html>";
-
+	body += "<div class='songs'>" + new_utunes->get_songs() + "</div>";
+  	body += page_foot();
   	res->setBody(body);
 
 	return res;
@@ -147,18 +162,10 @@ Response* song_handler::callback(Request* req)
 	string song_id=req->getQueryParam("id");
 
 	string body;
-	body += "<!DOCTYPE html>";
-  	body += "<html>";
-	body += "<head> <style> a:link, a:visited { background-color: white; color: black; border: 2px solid grey; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; } a:hover, a:active { background-color: blue; color: white; } </style> </head>";
-	body += table_design_blue;
-  	body += "<body style=\"text-align: center;\">";
+	body += page_head("Song");
   	body += "<h2>Song info</h2>";
 	body += new_utunes->get_curr_song_info(song_id);  
-	body += "<br> <a href='home'>Home</a> <br>";
-	body += "<br> <a href='login'>Log out</a>";
-  	body += "</body>";
-  	body += "</html>";
-
+  	body += page_foot();
   	res->setBody(body);
 
 	return res;
@@ -173,17 +180,10 @@ Response* liked_songs_handler::callback(Request* req)
 		return Response::redirect("/login");
 
 	string body;
-	body += "<!DOCTYPE html>";
-  	body += "<html>";
-	body += "<head> <style> a:link, a:visited { background-color: white; color: black; border: 2px solid green; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; } a:hover, a:active { background-color: blue; color: white; } </style> </head>";
-  	body += "<body style=\"text-align: center;\">";
+	body += page_head("Liked songs");
   	body += "<h1>Your Favourite Songs</h1>";
 	body += new_utunes->get_liked_songs(username);  
-	body += "<br> <a href='home'>Home</a> <br>";
-	body += "<br> <a href='login'>Log out</a>";
-  	body += "</body>";
-  	body += "</html>";
-
+  	body += page_foot();
   	res->setBody(body);
 
 	return res;
@@ -198,18 +198,13 @@ Response* playlists_handler::callback(Request* req)
 		return Response::redirect("/login");
 
 	string body;
-	body += "<!DOCTYPE html>";
-  	body += "<html>";
-	body += "<head> <style> a:link, a:visited { background-color: white; color: black; border: 2px solid green; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; } a:hover, a:active { background-color: blue; color: white; } </style> </head>";
-  	body += "<body style=\"text-align: center;\">";
+	body += page_head("Playlists");
   	body += "<h1>Your Playlists</h1>";
 	body += new_utunes->show_playlists(username);
-	body += "<br> <a href='createplaylist'>Create A Playlist</a> <br> <br>";
-	body += "<a href='home'>Home</a> <br> <br>";
-	body += "<a href='login'>Log out</a>";
-  	body += "</body>";
-  	body += "</html>";
-
+	body += "<div class='actions'>"
+	        "<a class='button primary' href='/createplaylist'>New playlist</a>"
+	        "</div>";
+  	body += page_foot();
   	res->setBody(body);
 
 	return res;
@@ -248,11 +243,7 @@ Response* curr_playlist_handler::callback(Request* req)
 	string playlist_id=req->getQueryParam("id");
 
 	string body;
-	body += "<!DOCTYPE html>";
-  	body += "<html>";
-	body += "<head> <style> a:link, a:visited { background-color: white; color: black; border: 2px solid red; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; } a:hover, a:active { background-color: red; color: grey; } </style> </head>";
-	body += table_design_red;      
-  	body += "<body style=\"text-align: center;\">";
+	body += page_head("Playlist");
   	body += "<h2>Playlist's Songs info</h2>";
 	body += new_utunes->get_playlist_info(playlist_id);
 	body += "<br> <br>";
@@ -260,11 +251,7 @@ Response* curr_playlist_handler::callback(Request* req)
 	body += "<br> <div style='background-color: rgb(207, 71, 30); padding: 1%; max-width: 300px; border-radius: 3px; margin: auto; '>  <form action='addsong?playlistid=";  
 	body += playlist_id;
 	body += "' method='post'> <p>Add Song To Your Playlist</p>  <input name='songid' type='text' placeholder='Song Id' style='display:block; margin: auto; margin-bottom: 10px; padding: 5px; width: 94%;' />   <button type='submit' style='display:block; width: 100%; padding: 7px;'>Add Song</button>  </form>  </div> ";  
-	body += "<br> <a href='home'>Home</a> <br>";
-	body += "<br> <a href='login'>Log out</a>";
-  	body += "</body>";
-  	body += "</html>";
-
+  	body += page_foot();
   	res->setBody(body);
 
 	return res;
@@ -386,6 +373,7 @@ void command_handle::run(char songs_list[], char liked_songs_list[])
 	try
 	{
 	MyServer server(PORT_NUM);
+	server.get("/styles.css", new ShowPage("static/styles.css"));
 	server.get("/signup", new ShowPage("pages/Signup.html"));
 	server.post("/signup", new signup_handler(new_utunes));
 	server.get("/login", new ShowPage("pages/login.html"));

@@ -48,7 +48,8 @@ string song::show_song_info()
 string song::get_song_info()
 {
 	string info;
-	info += song_id + "." + song_title + "<br>" + song_artist + "<br>" + song_release_year + "<br><br>";
+	info += "<span class='title'>" + song_title + "</span>"
+	        "<span class='by'>" + song_artist + " &middot; " + song_release_year + "</span>";
 	return info;
 }
 
@@ -79,7 +80,7 @@ string song::get_curr_song_info(bool has_user_liked)
 	 body+=song_link;
 	 body+="'type='audio/mpeg'> </audio>";
 	 	 
-	body +="</td> </tr> <br> ";
+	body +="</td> </tr>";
 	return body;
 }
 

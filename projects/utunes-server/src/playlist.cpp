@@ -100,9 +100,9 @@ string playlist::get_curr_playlist_info()
 	string info;
 	info += "<tr> <td>" + playlist_name + "</td> <td>";
 	if(is_private_playlist)
-		info+="Private </td> </tr> <br><br>";
+		info+="Private </td> </tr>";
 	else
-		info+="Public </td> </tr> <br><br>";
+		info+="Public </td> </tr>";
 		
 	return info;
 }

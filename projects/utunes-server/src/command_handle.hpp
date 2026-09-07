@@ -19,8 +19,12 @@ const char SEPARATOR_CHAR_CSV = ',';
 const char SEPARATOR_CHAR = ' ';
 const int FIRST_PLAYLISTS_NUM = 1;
 const int PORT_NUM=5030;
-const std::string table_design_blue = " <head> <style> table { width:100%; }table, th, td { border: 1px solid black; border-collapse: collapse; } th, td { padding: 15px; text-align: left;} #t01 tr:nth-child(even) { background-color: #eee; } #t01 tr:nth-child(odd) { background-color: #fff; } #t01 th { background-color: Blue; color: white; } </style> </head> ";
-const std::string table_design_red = " <head> <style> table { width:100%; }table, th, td { border: 1px solid black; border-collapse: collapse; } th, td { padding: 15px; text-align: left;} #t01 tr:nth-child(even) { background-color: #eee; } #t01 tr:nth-child(odd) { background-color: #fff; } #t01 th { background-color: Red; color: white; } </style> </head> ";
+// The document shell every page shares: one stylesheet, one navigation bar.
+// Inlining a <style> block per handler is how five pages ended up with five
+// different link colours.
+std::string page_head(const std::string& title);
+std::string page_foot();
+
 const std::string PRIVATE = "private";
 const std::string PUBLIC = "public";
 const std::string YEAR="year";

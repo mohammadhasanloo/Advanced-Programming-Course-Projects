@@ -4,6 +4,16 @@ build/
 *.out
 .DS_Store
 
+# The binaries each Makefile produces, named after their project.
+projects/carwash/carwash
+projects/cinema/cinema
+projects/library/library
+projects/mafia/mafia
+projects/robots/robots
+projects/soccer-stars/soccer-stars
+projects/utunes-cli/utunes
+projects/utunes-server/utunes-server
+
 # Cinema writes a rendered schedule beside itself.
 *.html
 !projects/utunes-server/static/*.html

@@ -1,0 +1,207 @@
+/* uTunes. One stylesheet for every page the server renders. */
+
+:root {
+  --ink: #1b1d21;
+  --muted: #6b7280;
+  --rule: #e4e6ea;
+  --page: #fbfbfa;
+  --card: #ffffff;
+  --brand: #1f6feb;
+  --brand-ink: #ffffff;
+  --accent: #b4530a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e9e7e4;
+    --muted: #9aa0a6;
+    --rule: #2b2e35;
+    --page: #131519;
+    --card: #1b1e24;
+    --brand: #6ea8f0;
+    --brand-ink: #10131a;
+    --accent: #e8a35c;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+}
+
+main { max-width: 60rem; margin: 0 auto; padding: 0 1.5rem 3rem; }
+
+/* Masthead */
+
+.masthead {
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 1.5rem;
+}
+
+.masthead .inner {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 1.1rem 1.5rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.wordmark {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.masthead nav a {
+  margin-left: 1.1rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.masthead nav a:hover { color: var(--ink); }
+
+/* Type */
+
+h1 { font-size: 1.6rem; margin: 0 0 1rem; line-height: 1.25; }
+h2 { font-size: 1.15rem; margin: 2rem 0 0.75rem; line-height: 1.3; }
+
+a { color: var(--brand); }
+
+.meta { color: var(--muted); font-size: 0.9rem; }
+
+/* The song list on the home page */
+
+.songs { display: grid; gap: 0.5rem; margin: 0 0 2rem; }
+
+.song-row {
+  display: block;
+  padding: 0.85rem 1rem;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.song-row:hover { border-color: var(--brand); }
+.song-row .title { font-weight: 600; display: block; }
+.song-row .by { color: var(--muted); font-size: 0.92rem; display: block; }
+
+/* Tables */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+th, td {
+  padding: 0.7rem 0.9rem;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+
+th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  font-weight: 600;
+  background: transparent;
+}
+
+tr:last-child td { border-bottom: none; }
+td audio { max-width: 260px; vertical-align: middle; }
+
+/* Buttons and forms */
+
+.button, input[type=submit], button {
+  display: inline-block;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.92rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button:hover, input[type=submit]:hover, button:hover { border-color: var(--brand); }
+
+.button.primary, input[type=submit] {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: var(--brand-ink);
+}
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.panel form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.panel form:last-child { border-bottom: none; }
+
+label { color: var(--muted); font-size: 0.9rem; }
+
+input[type=text], input[type=number], input[type=password], input[type=email], select {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--page);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.92rem;
+}
+
+input:focus, select:focus { outline: 2px solid var(--brand); outline-offset: -1px; }
+
+/* The centred forms: login, signup, new playlist */
+
+.form-card {
+  max-width: 24rem;
+  margin: 3rem auto;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 1.75rem;
+}
+
+.form-card h1 { text-align: center; }
+
+.form-card form { display: grid; gap: 0.75rem; }
+.form-card input, .form-card select { width: 100%; }
+.form-card .alt { text-align: center; margin: 1rem 0 0; font-size: 0.92rem; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1.5rem 0; }
+
+.panel h2 { margin-top: 0; }

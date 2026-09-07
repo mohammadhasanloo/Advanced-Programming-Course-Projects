@@ -1,5 +1,8 @@
 #include "recommended_songs.hpp"
 
+#include <iomanip>
+#include <sstream>
+
 
 using namespace std;
 
@@ -199,15 +202,22 @@ vector <pair <song*, double>> recommended_songs::calculate_confidence(int logged
 	return confidence;
 }
 
+static string percent(double value)
+{
+	ostringstream out;
+	out << fixed << setprecision(2) << value << " %";
+	return out.str();
+}
+
 string recommended_songs::print_recommended_songs(const vector <pair <song*, double>>& songs_confidence)
 {
 	string body;
 	for (int i = 0; i < count && static_cast<size_t>(i) != songs_confidence.size(); i++)
 	{
-		body+=songs_confidence[i].first->get_recommended_song_info() + "<td>" + to_string(songs_confidence[i].second) + " % </td> <td>";
+		body+=songs_confidence[i].first->get_recommended_song_info() + "<td>" + percent(songs_confidence[i].second) + "</td> <td>";
 		body+="<a href='song?id=";
 		body+=songs_confidence[i].first->get_id();
-		body+="'> Link </a> </td> </tr> <br>";
+		body+="'> Link </a> </td> </tr>";
 	}
 	return body;
 }
