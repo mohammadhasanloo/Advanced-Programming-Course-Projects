@@ -140,6 +140,7 @@ void Window::show_text(string input, Point src, RGB color, string font_addr,
       color.red,
       color.green,
       color.blue,
+      SDL_ALPHA_OPAQUE,
   };
   stringstream ss;
   ss << size;

@@ -196,7 +196,6 @@ void Bead::calculate_new_v_bead_ball(Ball* collision_ball, double pre_vx, double
 	double ball_vy = collision_ball->get_ball_vy();
 	double ball_vx = collision_ball->get_ball_vx();
 	double ball_mass = collision_ball->get_ball_mass();
-	double ball_radius = collision_ball->get_ball_radius();
 
 	bead_vx -= mass_coefficient(ball_mass, ball_mass) *
 	 (dot_product(bead_vx - ball_vx, bead_vy - ball_vy, bead_x - ball_x, bead_y - ball_y) /

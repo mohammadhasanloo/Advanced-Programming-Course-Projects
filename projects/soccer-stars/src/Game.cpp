@@ -26,7 +26,7 @@ bool Game::check_point_position()
 {
 	if (turn == 1)
 	{
-		for (int i = 0; i < beads_1.size(); i++)
+		for (size_t i = 0; i < beads_1.size(); i++)
 		{
 			if (beads_1[i]->check_bead_position(mouse_position))
 				return true;
@@ -34,7 +34,7 @@ bool Game::check_point_position()
 	}
 	else if (turn == 2)
 	{
-		for (int i = 0; i < beads_2.size(); i++)
+		for (size_t i = 0; i < beads_2.size(); i++)
 		{
 			if (beads_2[i]->check_bead_position(mouse_position))
 				return true;
@@ -56,7 +56,7 @@ int Game::take_bead_position()
 {
 	if (turn == 1)
 	{
-		for (int i = 0; i < beads_1.size(); i++)
+		for (size_t i = 0; i < beads_1.size(); i++)
 		{
 			if (beads_1[i]->check_bead_position(mouse_position))
 				return i;
@@ -64,7 +64,7 @@ int Game::take_bead_position()
 	}
 	else if (turn == 2)
 	{
-		for (int i = 0; i < beads_2.size(); i++)
+		for (size_t i = 0; i < beads_2.size(); i++)
 		{
 			if (beads_2[i]->check_bead_position(mouse_position))
 				return i;
@@ -127,44 +127,46 @@ void Game::update_window()
 			L_release_function(curr_event);
 			break;
 		}
+		default:
+			break;
 		}
 	}
 }
 
 void Game::check_collision_bead1_to_bead1()
 {
-	for (int i = 0; i < beads_1.size(); i++)
+	for (size_t i = 0; i < beads_1.size(); i++)
 	{
-		for (int j = (i + 1); j < beads_1.size(); j++)
+		for (size_t j = (i + 1); j < beads_1.size(); j++)
 			beads_1[i]->beads_collision(beads_1[j]);
 	}
 }
 
 void Game::check_collision_bead2_to_bead2()
 {
-	for (int i = 0; i < beads_2.size(); i++)
+	for (size_t i = 0; i < beads_2.size(); i++)
 	{
-		for (int j = (i + 1); j < beads_2.size(); j++)
+		for (size_t j = (i + 1); j < beads_2.size(); j++)
 				beads_2[i]->beads_collision(beads_2[j]);
 	}
 }
 
 void Game::check_collision_bead1_to_bead2()
 {
-	for (int i = 0; i < beads_1.size(); i++)
-		for (int j = 0; j < beads_2.size(); j++)
+	for (size_t i = 0; i < beads_1.size(); i++)
+		for (size_t j = 0; j < beads_2.size(); j++)
 				beads_1[i]->beads_collision(beads_2[j]);
 }
 
 void Game::check_collision_bead1_to_ball()
 {
-	for (int i = 0; i < beads_1.size(); i++)
+	for (size_t i = 0; i < beads_1.size(); i++)
 		beads_1[i]->bead_ball_collision(ball);
 }
 
 void Game::check_collision_bead2_to_ball()
 {
-	for (int i = 0; i < beads_2.size(); i++)
+	for (size_t i = 0; i < beads_2.size(); i++)
 		beads_2[i]->bead_ball_collision(ball);
 
 }
@@ -187,13 +189,13 @@ void Game::check_ball_bead_moving()
 	if (ball->get_ball_touch())
 		return;
 
-	for (int i = 0; i < beads_1.size(); i++)
+	for (size_t i = 0; i < beads_1.size(); i++)
 	{
 		if (beads_1[i]->get_bead_touch())
 			return;
 	}
 
-	for (int i = 0; i < beads_2.size(); i++)
+	for (size_t i = 0; i < beads_2.size(); i++)
 	{
 		if (beads_2[i]->get_bead_touch())
 			return;
@@ -220,13 +222,13 @@ void Game::change_info_after_goal(int player_goal_scored)
 
 void Game::change_bead_location_function()
 {
-	for (int i = 0; i < beads_1.size(); i++)
+	for (size_t i = 0; i < beads_1.size(); i++)
 	{
 		beads_1[i]->change_bead_location();
 		beads_1[i]->hit_bead_to_the_table();
 	}
 
-	for (int i = 0; i < beads_2.size(); i++)
+	for (size_t i = 0; i < beads_2.size(); i++)
 	{
 		beads_2[i]->change_bead_location();
 		beads_2[i]->hit_bead_to_the_table();
@@ -263,9 +265,9 @@ void Game::update()
 
 void Game::draw_both_team_breads()
 {
-	for (int i = 0; i < beads_1.size(); i++)
+	for (size_t i = 0; i < beads_1.size(); i++)
 		beads_1[i]->draw_beads(window, BEAD_1_PHOTO);
-	for (int i = 0; i < beads_2.size(); i++)
+	for (size_t i = 0; i < beads_2.size(); i++)
 		beads_2[i]->draw_beads(window, BEAD_2_PHOTO);
 }
 
