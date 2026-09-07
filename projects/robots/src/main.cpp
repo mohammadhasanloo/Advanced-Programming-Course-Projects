@@ -111,7 +111,7 @@ void Robot::change_location(pair <int, int> player_location, int side_number)
 	double pre_distance = player_and_robot_distance(pre_location, player_location);
 	pair <int, int> curr_location;
 
-	for (int i = 0; i < LOCATIONS.size(); i++)
+	for (size_t i = 0; i < LOCATIONS.size(); i++)
 	{
 		curr_location.first = location.first + LOCATIONS[i].first;
 		curr_location.second = location.second + LOCATIONS[i].second;
@@ -172,9 +172,9 @@ private:
 
 void Game_Handler::initialize_new_table()
 {
-	for (int i = 0; i < table.size(); i++)
+	for (size_t i = 0; i < table.size(); i++)
 	{
-		for (int j = 0; j < table[i].size(); j++)
+		for (size_t j = 0; j < table[i].size(); j++)
 		{
 			if (table[i][j] != TRAP_MARK)
 				table[i][j] = DOT_MARK;
@@ -190,7 +190,7 @@ void Game_Handler::put_player_in_table()
 
 void Game_Handler::put_robots_in_table()
 {
-	for (int i = 0; i < robots.size(); i++)
+	for (size_t i = 0; i < robots.size(); i++)
 	{
 		pair <int, int> robot_location = robots[i]->get_location();
 		table[robot_location.first][robot_location.second] = ROBOT_MARK;
@@ -199,7 +199,7 @@ void Game_Handler::put_robots_in_table()
 
 void Game_Handler::print_row_of_table(const vector <char>& table_row)
 {
-	for (int i = 0; i < table_row.size(); i++)
+	for (size_t i = 0; i < table_row.size(); i++)
 		cout << table_row[i];
 
 	cout << endl;
@@ -211,7 +211,7 @@ void Game_Handler::print_table()
 	put_player_in_table();
 	put_robots_in_table();
 
-	for (int i = 0; i < table.size(); i++)
+	for (size_t i = 0; i < table.size(); i++)
 		print_row_of_table(table[i]);
 
 	cout << endl;
@@ -226,9 +226,9 @@ bool Game_Handler::check_collision(Robot* robot1, Robot* robot2)
 
 void Game_Handler::check_collision_between_robots()
 {
-	for (int i = 0; i < robots.size(); i++)
+	for (size_t i = 0; i < robots.size(); i++)
 	{
-		for (int j = i + 1; j < robots.size(); j++)
+		for (size_t j = i + 1; j < robots.size(); j++)
 		{
 			if (check_collision(robots[i], robots[j]))
 			{
@@ -253,13 +253,13 @@ void Game_Handler::check_robots_number()
 
 void Game_Handler::change_robots_location()
 {
-	for (int i = 0; i < robots.size(); i++)
+	for (size_t i = 0; i < robots.size(); i++)
 		robots[i]->change_location(player->get_location(), side_number);
 }
 
 void Game_Handler::check_collision_with_traps()
 {
-	for (int i = 0; i < robots.size(); i++)
+	for (size_t i = 0; i < robots.size(); i++)
 	{
 		bool dead_condition = robots[i]->check_destroy_robot_condtion(table);
 
@@ -287,7 +287,7 @@ void Game_Handler::check_player_dead()
 		return;
 	}
 
-	for (int i = 0; i < robots.size(); i++)
+	for (size_t i = 0; i < robots.size(); i++)
 	{
 		pair<int, int> robot_location = robots[i]->get_location();
 
@@ -349,7 +349,7 @@ void Game_Handler::find_type_of_moving(int move_number)
 
 void Game_Handler::run()
 {
-	for (int i = 0; i < move_form.size(); i++)
+	for (size_t i = 0; i < move_form.size(); i++)
 	{
 		find_type_of_moving(i);
 		
@@ -413,9 +413,9 @@ Player* Command_Handler::find_player_location(const vector <vector <char>>& tabl
 	Player* curr_player=new Player();
 	pair <int, int> location;
 
-	for (int i = 0; i < table.size(); i++)
+	for (size_t i = 0; i < table.size(); i++)
 	{
-		for (int j = 0; j < table[i].size(); j++)
+		for (size_t j = 0; j < table[i].size(); j++)
 		{
 			if (table[i][j] == PLAYER_MARK)
 			{
@@ -432,9 +432,9 @@ vector <Robot*> Command_Handler::find_robots_location(const vector <vector <char
 {
 	vector <Robot*> robots;
 	pair <int, int> location;
-	for (int i = 0; i < table.size(); i++)
+	for (size_t i = 0; i < table.size(); i++)
 	{
-		for (int j = 0; j < table[i].size(); j++)
+		for (size_t j = 0; j < table[i].size(); j++)
 		{
 			if (table[i][j] == ROBOT_MARK)
 			{
@@ -479,8 +479,13 @@ void Command_Handler::get_inputs()
 
 int main(int argc, char const* argv[])
 {
-	int seed = atoi(argv[1]);
-	srand(seed);
+	if (argc < 2)
+	{
+		cerr << "usage: robots <seed>" << endl;
+		return 1;
+	}
+
+	srand(atoi(argv[1]));
 
 	Command_Handler* new_program= new Command_Handler();
 	new_program->get_inputs();
