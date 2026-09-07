@@ -128,12 +128,10 @@ public:
 	void remove_intended_book(string remove_book);
 	void change__books_borrow_days(int days);
 	void change_info_after_extend(string curr_book);
-	//int get_total_penalty();
 
 private:
 	vector <books*> borrow_books;
 	int books_num = 0;
-	int debt = 0;
 };
 
 
@@ -219,7 +217,7 @@ void Library::check_member_errors(string member_name)
 	if(member_name.empty())
 		throw runtime_error("name is empty");
 
-	for (int i = 0;i < lib_members.size();i++)
+	for (size_t i = 0; i < lib_members.size(); i++)
 	{
 		if (member_name == lib_members[i]->get_name())
 			throw runtime_error("repetitious name");
@@ -252,7 +250,7 @@ void Library::check_docs_errors(string title, int copies)
 	if (title.empty())
 		throw runtime_error("title is empty");
 
-	for (int i = 0;i < lib_books.size();i++)
+	for (size_t i = 0; i < lib_books.size(); i++)
 	{
 		if (title == lib_books[i]->get_title())
 			throw runtime_error("repetitious title");
@@ -300,13 +298,13 @@ void members::add_days(int days)
 
 void students::change__books_borrow_days(int days)
 {
-	for (int i = 0;i < borrow_books.size();i++)
+	for (size_t i = 0; i < borrow_books.size(); i++)
 		borrow_books[i]->change_info_after_time_pass(days);
 }
 
 void professors::change__books_borrow_days(int days)
 {
-	for (int i = 0;i < borrow_books.size();i++)
+	for (size_t i = 0; i < borrow_books.size(); i++)
 		borrow_books[i]->change_info_after_time_pass(days);
 }
 
@@ -315,7 +313,7 @@ void Library::time_pass(int days)
 	if(days<0)
 		throw runtime_error("days number must be bigger than -1!");
 
-	for (int i = 0;i < lib_members.size();i++)
+	for (size_t i = 0; i < lib_members.size(); i++)
 		lib_members[i]->add_days(days);
 }
 
@@ -330,7 +328,7 @@ vector <string> Library::available_titles()
 {
 	vector <string> result;
 
-	for (int i = 0;i < lib_books.size();i++ )
+	for (size_t i = 0; i < lib_books.size(); i++)
 	{
 		string available_book=lib_books[i]->get_available_books();
 		if (available_book=="")
@@ -349,7 +347,7 @@ bool books::is_existence_book()
 
 books* Library::search_intended_book(string document_title)
 {
-	for (int i = 0;i < lib_books.size();i++)
+	for (size_t i = 0; i < lib_books.size(); i++)
 	{
 		if (lib_books[i]->get_title() == document_title)
 		{
@@ -364,7 +362,7 @@ books* Library::search_intended_book(string document_title)
 
 members* Library::search_intended_member(string member_name)
 {
-	for (int i = 0;i < lib_members.size();i++)
+	for (size_t i = 0; i < lib_members.size(); i++)
 	{
 		if (lib_members[i]->get_name() == member_name)
 			return lib_members[i];
@@ -466,7 +464,7 @@ int refrences::calculate_new_debt()
 void students::remove_intended_book(string remove_book)
 {
 	bool find_curr_book = false;
-	for (int i = 0;i < borrow_books.size();i++)
+	for (size_t i = 0; i < borrow_books.size(); i++)
 	{
 		if (borrow_books[i]->get_title() == remove_book)
 		{
@@ -485,7 +483,7 @@ void students::remove_intended_book(string remove_book)
 void professors::remove_intended_book(string remove_book)
 {
 	bool find_curr_book = false;
-	for (int i = 0;i < borrow_books.size();i++)
+	for (size_t i = 0; i < borrow_books.size(); i++)
 	{
 		if (borrow_books[i]->get_title() == remove_book)
 		{
@@ -581,7 +579,7 @@ void common_books::change_info_after_extend()
 void students::change_info_after_extend(string curr_book)
 {
 	bool find_book = false;
-	for (int i = 0;i < borrow_books.size();i++)
+	for (size_t i = 0; i < borrow_books.size(); i++)
 	{
 		if (borrow_books[i]->get_title() == curr_book)
 		{
@@ -597,7 +595,7 @@ void students::change_info_after_extend(string curr_book)
 void professors::change_info_after_extend(string curr_book)
 {
 	bool find_book = false;
-	for (int i = 0;i < borrow_books.size();i++)
+	for (size_t i = 0; i < borrow_books.size(); i++)
 	{
 		if (borrow_books[i]->get_title() == curr_book)
 		{
@@ -639,7 +637,7 @@ int Library::get_total_penalty(string member_name)
 {
 	bool find_book = false;
 	int total_penalty = 0;
-	for (int i = 0;i < lib_members.size();i++)
+	for (size_t i = 0; i < lib_members.size(); i++)
 	{
 		if (lib_members[i]->get_name()== member_name)
 		{
@@ -657,33 +655,37 @@ void Command_Handle::run()
 {
 	try
 	{
-		//put your testcase here please
-		//don't use get_total_penalty please
-		Library ut_lib;
-		ut_lib.add_student_member("810199999", "Negar");
-		ut_lib.add_student_member("810198888", "Naser");
-		ut_lib.add_prof_member("Dr. Nagargar");
-		ut_lib.add_prof_member("Dr. Naseri");
-		ut_lib.add_prof_member("Dr. Naseri");
-		ut_lib.add_book("Lean Startup", 1);
-		ut_lib.add_magazine("Today News, vol.38, no.3", 1395, 3, 1);
-		ut_lib.add_reference("Cambridge Dictionary", 3);
-		ut_lib.borrow("Naser", "Lean Startup");
-		vector<string> available_docs = ut_lib.available_titles();
-		ut_lib.time_pass(10);
-		ut_lib.extend("Naser", "Lean Startup");
-		ut_lib.time_pass(12);
-		ut_lib.return_document("Naser", "Lean Startup");
-		ut_lib.borrow("Naser", "Cambridge Dictionary");
-		ut_lib.time_pass(8);
+		Library library;
 
+		library.add_student_member("810199001", "Nadia");
+		library.add_prof_member("Dr. Okafor");
 
+		library.add_book("The Lean Startup", 1);
+		library.add_magazine("Comms of the ACM, vol.38, no.3", 1395, 3, 1);
+		library.add_reference("Cambridge Dictionary", 3);
+
+		cout << "On the shelf:" << endl;
+		for (const string& title : library.available_titles())
+			cout << "  " << title << endl;
+
+		cout << endl << "Nadia borrows The Lean Startup" << endl;
+		library.borrow("Nadia", "The Lean Startup");
+
+		cout << endl << "While it is out, the shelf is one title shorter:" << endl;
+		for (const string& title : library.available_titles())
+			cout << "  " << title << endl;
+
+		cout << endl << "A reference work goes out to a professor:" << endl;
+		library.borrow("Dr. Okafor", "Cambridge Dictionary");
+		library.time_pass(8);
+
+		for (const string& title : library.available_titles())
+			cout << "  " << title << endl;
 	}
 	catch (runtime_error& ex)
 	{
 		cerr << ex.what() << endl;
 	}
-
 }
 
 int main()
