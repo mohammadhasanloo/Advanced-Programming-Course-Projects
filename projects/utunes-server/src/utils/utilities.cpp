@@ -105,7 +105,8 @@ string urlEncode(string const &str) {
     case ']':
     case '`':
       // the character needs to be encoded
-      sprintf(encode_buf + 1, "%02X", str[pos]);
+      snprintf(encode_buf + 1, sizeof(encode_buf) - 1, "%02X",
+               static_cast<unsigned char>(str[pos]));
       result += encode_buf;
       break;
     }

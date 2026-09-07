@@ -48,7 +48,7 @@ int TemplateParser::findEndOfCodeBlock(int startPosition,
 }
 
 void TemplateParser::appendHTMLToCode(int begin, int end,
-                                      string const &unparsedTemplate) {
+                                      string const &) {
   code += "\nstring __variable" + to_string(variableCount) + ";";
   code += "\n__variable" + to_string(variableCount) +
           " = __unparsedTemplate__.substr(";

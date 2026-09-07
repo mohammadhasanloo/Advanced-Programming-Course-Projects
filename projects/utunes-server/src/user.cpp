@@ -13,7 +13,7 @@ user::user(string _email, string _username, string _password)
 	password = _password;
 }
 
-void user::check_sign_up_errors(string new_email, string new_username, string new_password)
+void user::check_sign_up_errors(string new_email, string new_username, string)
 {
 	if (new_email == email || new_username==username)
 		throw Server::Exception("bad request");
@@ -32,9 +32,9 @@ void user::add_new_liked_song(song* new_liked_song)
 
 void user::sort_by_id()
 {
-	for (int i = 0; i < liked_songs.size(); i++)
+	for (size_t i = 0; i < liked_songs.size(); i++)
 	{
-		for (int j = i + 1; j < liked_songs.size(); j++)
+		for (size_t j = i + 1; j < liked_songs.size(); j++)
 		{
 			if (liked_songs[i]->get_id() > liked_songs[j]->get_id())
 				swap(liked_songs[i], liked_songs[j]);
@@ -48,7 +48,7 @@ string user::show_liked_songs()
 
 	string body;
 
-	for (int i = 0; i < liked_songs.size(); i++)
+	for (size_t i = 0; i < liked_songs.size(); i++)
 		body += liked_songs[i]->show_song_info();
 
 	return body;
@@ -56,7 +56,7 @@ string user::show_liked_songs()
 
 void user::delete_liked_song(string curr_song_id)
 {
-	for (int i = 0; i < liked_songs.size(); i++)
+	for (size_t i = 0; i < liked_songs.size(); i++)
 	{
 		if (liked_songs[i]->get_id() == curr_song_id)
 		{
@@ -75,7 +75,7 @@ void user::add_new_liked_song_to_user(song* new_liked_song)
 
 bool user::check_liked_curr_song(song* curr_song)
 {
-	for (int i = 0; i < liked_songs.size(); i++)
+	for (size_t i = 0; i < liked_songs.size(); i++)
 	{
 		if (liked_songs[i] == curr_song)
 			return true;
@@ -85,7 +85,7 @@ bool user::check_liked_curr_song(song* curr_song)
 
 bool user::is_song_liked(song* curr_song)
 {
-	for (int i = 0; i < liked_songs.size(); i++)
+	for (size_t i = 0; i < liked_songs.size(); i++)
 	{
 		if (curr_song == liked_songs[i])
 			return true;

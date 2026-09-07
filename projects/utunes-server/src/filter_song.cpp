@@ -12,7 +12,7 @@ filter_song::filter_song()
 
 filter_song::~filter_song()
 {
-	for (int i = 0; i < filters.size(); i++)
+	for (size_t i = 0; i < filters.size(); i++)
 	{
 		if (filters[i] != nullptr)
 		{
@@ -53,14 +53,14 @@ void filter_song::add_like_filter(string curr_min_like, string curr_max_like)
 
 void filter_song::delete_filters()
 {
-	for (int i = 0; i < filters.size(); i++)
+	for (size_t i = 0; i < filters.size(); i++)
 		remove_curr_filter(i);
 }
 
 vector <song*> filter_song::get_intended_songs(vector <song*> songs)
 {
 	vector <song*> intended_songs = songs;
-	for (int i = 0; i < filters.size(); i++)
+	for (size_t i = 0; i < filters.size(); i++)
 	{
 		if (filters[i] != nullptr)
 			intended_songs = filters[i]->split_songs(intended_songs);

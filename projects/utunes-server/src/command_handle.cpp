@@ -32,7 +32,7 @@ map <string, int> command_handle::save_column(const vector <string>& curr_separa
 {
 	map <string, int> column;
 
-	for (int i = 0; i < curr_separated_lines.size(); i++)
+	for (size_t i = 0; i < curr_separated_lines.size(); i++)
 		column[curr_separated_lines[i]] = i;
 		
 	return column;
@@ -107,7 +107,7 @@ Response* login_handler::callback(Request* req)
 string home_handler::add_filter_html()
 {
 	string body;
-	ifstream input_file_csv("HTMLs/Filter.html");
+	ifstream input_file_csv("pages/Filter.html");
 	string one_line;
 	while(getline(input_file_csv, one_line))
 		body+=one_line;
@@ -115,7 +115,7 @@ string home_handler::add_filter_html()
 	return body;	
 }
 
-Response* home_handler::callback(Request* req)
+Response* home_handler::callback(Request*)
 {
 	Response* res=new Response;
 
@@ -169,6 +169,8 @@ Response* liked_songs_handler::callback(Request* req)
 	Response* res=new Response;
 	res->setHeader("Content-Type", "text/html");
 	string username=req->getSessionId();
+	if(!new_utunes->is_known_user(username))
+		return Response::redirect("/login");
 
 	string body;
 	body += "<!DOCTYPE html>";
@@ -192,6 +194,8 @@ Response* playlists_handler::callback(Request* req)
 	Response* res=new Response;
 	res->setHeader("Content-Type", "text/html");
 	string username=req->getSessionId();
+	if(!new_utunes->is_known_user(username))
+		return Response::redirect("/login");
 
 	string body;
 	body += "<!DOCTYPE html>";
@@ -214,6 +218,8 @@ Response* playlists_handler::callback(Request* req)
 Response* create_playlist_handler::callback(Request* req)
 {
 	string username=req->getSessionId();
+	if(!new_utunes->is_known_user(username))
+		return Response::redirect("/login");
 	string playlist_name=req->getBodyParam("name");
 	string public_or_private=req->getBodyParam("publicorprivate");
 
@@ -234,6 +240,8 @@ Response* create_playlist_handler::callback(Request* req)
 Response* curr_playlist_handler::callback(Request* req)
 {
 	string username=req->getSessionId();
+	if(!new_utunes->is_known_user(username))
+		return Response::redirect("/login");
 
 	Response* res=new Response;
 	res->setHeader("Content-Type", "text/html");
@@ -265,6 +273,8 @@ Response* curr_playlist_handler::callback(Request* req)
 Response* unlike_handler::callback(Request* req)
 {
 	string username=req->getSessionId();
+	if(!new_utunes->is_known_user(username))
+		return Response::redirect("/login");
 	string song_id=req->getQueryParam("id");
 	string address="/" + req->getQueryParam("address");
 
@@ -376,15 +386,15 @@ void command_handle::run(char songs_list[], char liked_songs_list[])
 	try
 	{
 	MyServer server(PORT_NUM);
-	server.get("/signup", new ShowPage("HTMLs/Signup.html"));
+	server.get("/signup", new ShowPage("pages/Signup.html"));
 	server.post("/signup", new signup_handler(new_utunes));
-	server.get("/login", new ShowPage("HTMLs/login.html"));
+	server.get("/login", new ShowPage("pages/login.html"));
 	server.post("/login", new login_handler(new_utunes));
 	server.get("/home", new home_handler(new_utunes));
 	server.get("/song", new song_handler(new_utunes));
 	server.get("/likedsongs", new liked_songs_handler(new_utunes));
 	server.get("/playlists", new playlists_handler(new_utunes));
-	server.get("/createplaylist", new ShowPage("HTMLs/createplaylist.html"));
+	server.get("/createplaylist", new ShowPage("pages/createplaylist.html"));
 	server.post("/createplaylist", new create_playlist_handler(new_utunes));
 	server.get("/currplaylist", new curr_playlist_handler(new_utunes));
 	server.get("/unlike", new unlike_handler(new_utunes));

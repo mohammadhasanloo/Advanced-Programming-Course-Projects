@@ -24,7 +24,7 @@ class NotFoundHandler : public RequestHandler {
 public:
   NotFoundHandler(string notFoundErrPage = "")
       : notFoundErrPage(notFoundErrPage) {}
-  Response *callback(Request *req) {
+  Response *callback(Request *) {
     Response *res = new Response(404);
     if (!notFoundErrPage.empty()) {
       res->setHeader("Content-Type", "text/" + getExtension(notFoundErrPage));
@@ -311,7 +311,7 @@ ShowFile::ShowFile(string _filePath, string _fileType) {
   fileType = _fileType;
 }
 
-Response *ShowFile::callback(Request *req) {
+Response *ShowFile::callback(Request *) {
   Response *res = new Response;
   res->setHeader("Content-Type", fileType);
   res->setBody(readFile(filePath.c_str()));
@@ -345,7 +345,7 @@ Response *TemplateHandler::callback(Request *req) {
   return res;
 }
 
-map<string, string> TemplateHandler::handle(Request *req) {
+map<string, string> TemplateHandler::handle(Request *) {
   map<string, string> context;
   return context;
 }

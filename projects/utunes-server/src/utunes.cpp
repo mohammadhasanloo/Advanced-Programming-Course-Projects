@@ -19,21 +19,21 @@ utunes::~utunes()
 	filtered_songs = nullptr;
 	delete pre;
 
-	for (int i = 0; i < users.size(); i++)
+	for (size_t i = 0; i < users.size(); i++)
 	{
 		user* pre = users[i];
 		users[i] = nullptr;
 		delete pre;
 	}
 
-	for (int i = 0; i < songs.size(); i++)
+	for (size_t i = 0; i < songs.size(); i++)
 	{
 		song* pre = songs[i];
 		songs[i] = nullptr;
 		delete pre;
 	}
 
-	for (int i = 0; i < playlists.size(); i++)
+	for (size_t i = 0; i < playlists.size(); i++)
 	{
 		playlist* pre = playlists[i];
 		playlists[i] = nullptr;
@@ -44,17 +44,17 @@ utunes::~utunes()
 void utunes::read_files(const vector <string>& separated_lines,  map <string, int> column)
 {
 	string new_link, new_id, new_artist, new_release_year, new_title;
-	for (int i = 0; i < separated_lines.size(); i++)
+	for (size_t i = 0; i < separated_lines.size(); i++)
 	{
-		if (i == column[LINK])
+		if (i == static_cast<size_t>(column[LINK]))
 			new_link = separated_lines[i];
-		if (i == column[ID])
+		if (i == static_cast<size_t>(column[ID]))
 			new_id = separated_lines[i];
-		if (i == column[ARTIST])
+		if (i == static_cast<size_t>(column[ARTIST]))
 			new_artist = separated_lines[i];
-		if (i == column[RELEASE_YEAR])
+		if (i == static_cast<size_t>(column[RELEASE_YEAR]))
 			new_release_year = separated_lines[i];
-		if (i == column[TITLE])
+		if (i == static_cast<size_t>(column[TITLE]))
 			new_title = separated_lines[i];
 	}
 
@@ -63,7 +63,7 @@ void utunes::read_files(const vector <string>& separated_lines,  map <string, in
 
 bool utunes::has_repetitious_username(string new_username)
 {
-	for (int i = 0; i < users.size(); i++)
+	for (size_t i = 0; i < users.size(); i++)
 	{
 		if (users[i]->get_username() == new_username)
 			return true;
@@ -73,7 +73,7 @@ bool utunes::has_repetitious_username(string new_username)
 
 song* utunes::search_intended_song(string new_liked_song)
 {
-	for (int i = 0; i < songs.size(); i++)
+	for (size_t i = 0; i < songs.size(); i++)
 	{
 		if (songs[i]->get_id() == new_liked_song)
 			return songs[i];
@@ -85,27 +85,32 @@ void utunes::read_liked_songs_files(const vector <string>& separated_lines, map 
 {
 	string new_username, new_email, new_password, new_liked_song;
 	
-	for (int i = 0; i < separated_lines.size(); i++)
+	for (size_t i = 0; i < separated_lines.size(); i++)
 	{
-		if (i == column[LIKED_SONGS_ORDER])
+		if (i == static_cast<size_t>(column[LIKED_SONGS_ORDER]))
 			new_liked_song = separated_lines[i];
 
-		if (i == column[PASSWORD])
+		if (i == static_cast<size_t>(column[PASSWORD]))
 			new_password = separated_lines[i];
 
-		if (i == column[EMAIL])
+		if (i == static_cast<size_t>(column[EMAIL]))
 			new_email = separated_lines[i];
 
-		if (i == column[USERNAME])
+		if (i == static_cast<size_t>(column[USERNAME]))
 			new_username = separated_lines[i];
 	}
 
 	if (!has_repetitious_username(new_username))
 		users.push_back(new user(new_email, new_username, new_password));
 
-	for (int i = 0; i < users.size(); i++)
+	// A like naming a song the catalogue does not have is bad data in the file,
+	// not a reason to abandon the whole load.
+	song* curr_song = search_intended_song(new_liked_song);
+	if (curr_song == nullptr)
+		return;
+
+	for (size_t i = 0; i < users.size(); i++)
 	{
-		song* curr_song=search_intended_song(new_liked_song);
 		if (users[i]->get_username() == new_username)
 			users[i]->add_new_liked_song_to_user(curr_song);
 	}
@@ -113,7 +118,7 @@ void utunes::read_liked_songs_files(const vector <string>& separated_lines, map 
 
 void utunes::check_sign_up_errors(string username, string email, string password)
 {
-	for (int i = 0; i < users.size(); i++)
+	for (size_t i = 0; i < users.size(); i++)
 		users[i]->check_sign_up_errors(email, username, password);
 }
 
@@ -144,7 +149,7 @@ string utunes::get_songs()
 		vector <song*> intended_songs = filtered_songs->get_intended_songs(songs);
 		sort_by_id(intended_songs);
 		string body;
-		for(int i=0;i<intended_songs.size();i++)
+		for (size_t i = 0; i < intended_songs.size(); i++)
 			body+=get_body_of_song(intended_songs[i]);
 
 		return body;	
@@ -153,7 +158,7 @@ string utunes::get_songs()
 	{
 		sort_by_id(songs);
 		string body;
-		for(int i=0;i<songs.size();i++)
+		for (size_t i = 0; i < songs.size(); i++)
 			body+=get_body_of_song(songs[i]);
 
 		return body;
@@ -162,7 +167,7 @@ string utunes::get_songs()
 
 playlist* utunes::search_intended_playlist(string curr_playlist_id)
 {
-	for(int i=0;i<playlists.size();i++)
+	for (size_t i = 0; i < playlists.size(); i++)
 	{
 		if(curr_playlist_id==to_string(playlists[i]->get_playlist_id()))
 		return playlists[i];
@@ -181,7 +186,7 @@ void utunes::login_user(string input_username, string input_pass)
 {
 	logout_user();
 
-	for (int i = 0; i < users.size(); i++)
+	for (size_t i = 0; i < users.size(); i++)
 	{
 		if (users[i]->get_username() == input_username)
 		{
@@ -213,7 +218,7 @@ string utunes::get_curr_song_info(string song_id)
 	body+=curr_song->get_curr_song_info(has_user_liked);
 	body+="</table> <br>";
 	body+="<table id='t01'> <tr> <th> Song Name </th> <th> Artist </th> <th> Year Release </th> <th> Confidence </th> <th> Link </th> </tr>";
-	body+="<h2> Recommnded Songs </h2>";
+	body+="<h2> Recommended Songs </h2>";
 	body+=get_recommeded_songs(COUNT_OF_RECOMMENDED_SONGS);
 	body+="</table>";
 
@@ -225,14 +230,22 @@ string utunes::get_liked_songs(string username)
 	string body;
 
 	user* curr_user=search_curr_user(username);
+	if(curr_user == nullptr)
+		return "";
+
 	body = curr_user->show_liked_songs();
 
 	return body;
 }
 
+bool utunes::is_known_user(string username)
+{
+	return search_curr_user(username) != nullptr;
+}
+
 user* utunes::search_curr_user(string username)
 {
-	for(int i=0;i<users.size();i++)
+	for (size_t i = 0; i < users.size(); i++)
 	{
 		if(username==users[i]->get_username())
 		return users[i];
@@ -244,7 +257,7 @@ vector <playlist*> utunes::get_intended_playlists(string curr_user)
 {
 	vector <playlist*> intended_playlists;
 
-	for(int i=0;i<playlists.size();i++)
+	for (size_t i = 0; i < playlists.size(); i++)
 	{
 		if(playlists[i]->get_username_of_playlist() == curr_user)
 			intended_playlists.push_back(playlists[i]);
@@ -259,7 +272,7 @@ string utunes::show_playlists(string username)
 
 	vector <playlist*> users_playlists= get_intended_playlists(username);
 
-	for(int i=0;i<users_playlists.size();i++)
+	for (size_t i = 0; i < users_playlists.size(); i++)
 	{
 		body+="<br> <a href='currplaylist?id=";
 		body+=to_string(users_playlists[i]->get_playlist_id());
@@ -273,7 +286,7 @@ string utunes::show_playlists(string username)
 
 song* utunes::search_curr_song(string song_id)
 {
-	for(int i=0;i<songs.size();i++)
+	for (size_t i = 0; i < songs.size(); i++)
 	{
 		if(songs[i]->get_id() == song_id)
 			return songs[i];
@@ -297,9 +310,9 @@ void utunes::logout_user()
 
 void utunes::sort_by_id(vector <song*> curr_song)
 {
-	for (int i = 0; i < curr_song.size(); i++)
+	for (size_t i = 0; i < curr_song.size(); i++)
 	{
-		for (int j = i + 1; j < curr_song.size(); j++)
+		for (size_t j = i + 1; j < curr_song.size(); j++)
 		{
 			if (curr_song[i]->get_id() > curr_song[j]->get_id())
 				swap(curr_song[i], curr_song[j]);
@@ -313,7 +326,7 @@ void utunes::get_all_songs_info()
 	{
 		sort_by_id(songs);
 
-		for (int i = 0; i < songs.size(); i++)
+		for (size_t i = 0; i < songs.size(); i++)
 			songs[i]->show_song_info();
 	}
 	else
@@ -322,7 +335,7 @@ void utunes::get_all_songs_info()
 
 		sort_by_id(intended_songs);
 
-		for (int i = 0; i < intended_songs.size(); i++)
+		for (size_t i = 0; i < intended_songs.size(); i++)
 			intended_songs[i]->show_song_info();
 	}
 }
@@ -330,7 +343,7 @@ void utunes::get_all_songs_info()
 void utunes::check_is_existed_song(string liked_song_id)
 {
 	bool is_song_existed = false;
-	for (int i = 0; i < songs.size(); i++)
+	for (size_t i = 0; i < songs.size(); i++)
 	{
 		if (songs[i]->get_id() == liked_song_id)
 			is_song_existed = true;
@@ -356,6 +369,9 @@ void utunes::show_liked_songs()
 void utunes::delete_liked_song(string curr_song_id, string curr_username)
 {
 	user* curr_user = search_curr_user(curr_username);
+	if(curr_user == nullptr)
+		return;
+
 	curr_user->delete_liked_song(curr_song_id);
 }
 
@@ -367,7 +383,7 @@ void utunes::make_new_playlist(string new_playlist_name, bool new_is_private)
 
 void utunes::search_curr_playlist(song* curr_song, string curr_playlist_id)
 {
-	for (int j = 0; j < playlists.size(); j++)
+	for (size_t j = 0; j < playlists.size(); j++)
 	{
 		if (playlists[j]->get_playlist_id() == stoi(curr_playlist_id))
 		{
@@ -384,7 +400,7 @@ void utunes::search_curr_playlist(song* curr_song, string curr_playlist_id)
 
 void utunes::add_song_to_playlist(string curr_playlist_id, string curr_song_id)
 {
-	for (int i = 0; i < songs.size(); i++)
+	for (size_t i = 0; i < songs.size(); i++)
 	{
 		if (curr_song_id == songs[i]->get_id())
 		{
@@ -397,7 +413,7 @@ void utunes::add_song_to_playlist(string curr_playlist_id, string curr_song_id)
 
 void utunes::show_songs_of_playlist(string curr_playlist_id)
 {
-	for (int i = 0; i < playlists.size(); i++)
+	for (size_t i = 0; i < playlists.size(); i++)
 	{
 		if (playlists[i]->get_playlist_id() == stoi(curr_playlist_id))
 		{
@@ -413,7 +429,7 @@ void utunes::show_songs_of_playlist(string curr_playlist_id)
 
 void utunes::delete_song_from_playlist(string curr_playlist_id, string curr_song_id)
 {
-	for (int i = 0; i < playlists.size(); i++)
+	for (size_t i = 0; i < playlists.size(); i++)
 	{
 		if (stoi(curr_playlist_id) == playlists[i]->get_playlist_id())
 		{

@@ -21,6 +21,8 @@ public:
 	bool check_user_liked_curr_song(song* curr_song, user* curr_user);
 	std::vector <double> make_list_of_front_side_users(int user1, const std::vector <std::vector <bool>>& users_and_songs_matrix);
 	double calculate_similarity_between_users(int user1, int user2, const std::vector <std::vector <bool>>& users_and_songs_matrix);
+	static const int NOT_FOUND = -1;
+
 	int find_logged_in_user();
 	std::vector <std::pair <double, user*>> make_other_users_similarity_percent(int logged_in_user_num,
 		const std::vector <double>& users_similarity_matrix);

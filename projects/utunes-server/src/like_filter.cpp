@@ -14,7 +14,7 @@ vector <song*> like_filter::split_songs(vector <song*> intended_songs)
 {
 	vector <song*> search_song;
 
-	for (int i = 0; i < intended_songs.size(); i++)
+	for (size_t i = 0; i < intended_songs.size(); i++)
 	{
 		bool has_condition = intended_songs[i]->check_like_conditions(min_like, max_like);
 

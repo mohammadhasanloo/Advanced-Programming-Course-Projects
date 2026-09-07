@@ -22,7 +22,7 @@ vector <bool> recommended_songs::make_list_of_liked_songs(user* curr_user)
 {
 	vector <bool> liked_songs;
 
-	for (int i = 0; i < songs.size(); i++)
+	for (size_t i = 0; i < songs.size(); i++)
 	{
 		if (check_user_liked_curr_song(songs[i], curr_user))
 			liked_songs.push_back(true);
@@ -37,7 +37,7 @@ double recommended_songs::calculate_similarity_between_users(int user1, int user
 {
 	double similarity_songs_num = 0;
 
-	for (int i = 0; i < songs.size(); i++)
+	for (size_t i = 0; i < songs.size(); i++)
 	{
 		if ((users_and_songs_matrix[user1][i] == users_and_songs_matrix[user2][i]) && (users_and_songs_matrix[user1][i]==true))
 			similarity_songs_num++;
@@ -50,7 +50,7 @@ vector <double> recommended_songs::make_list_of_front_side_users(int user1, cons
 {
 	vector <double> similarity_user1_and_user2;
 
-	for (int i = 0; i < users.size(); i++)
+	for (size_t i = 0; i < users.size(); i++)
 		similarity_user1_and_user2.push_back(calculate_similarity_between_users(user1, i, users_and_songs_matrix));
 
 	return similarity_user1_and_user2;
@@ -58,11 +58,12 @@ vector <double> recommended_songs::make_list_of_front_side_users(int user1, cons
 
 int recommended_songs::find_logged_in_user()
 {
-	for (int i = 0; i < users.size(); i++)
+	for (size_t i = 0; i < users.size(); i++)
 	{
 		if (users[i] == user_logged_in)
-			return i;
+			return static_cast<int>(i);
 	}
+	return NOT_FOUND;
 }
 
 vector <pair <double, user*>> recommended_songs::make_pairs_of_users_similarity(int logged_in_user_num,
@@ -70,10 +71,10 @@ vector <pair <double, user*>> recommended_songs::make_pairs_of_users_similarity(
 {
 	vector <pair <double, user*>> similarity_percent;
 
-	for (int i = 0; i < users.size(); i++)
+	for (size_t i = 0; i < users.size(); i++)
 	{
 		pair <double, user*> curr_similarity_percent;
-		if (i != logged_in_user_num)
+		if (static_cast<int>(i) != logged_in_user_num)
 		{
 			curr_similarity_percent.first = users_similarity_matrix[i];
 			curr_similarity_percent.second = users[i];
@@ -85,7 +86,7 @@ vector <pair <double, user*>> recommended_songs::make_pairs_of_users_similarity(
 
 void recommended_songs::print_users_similarity(const vector <pair <double, user*>> &similarity_percent)
 {
-	for (int i = 0; ((i < count) && (i != similarity_percent.size())); i++)
+	for (int i = 0; i < count && static_cast<size_t>(i) != similarity_percent.size(); i++)
 		cout << setprecision(PRECISION_NUMBER) << fixed << similarity_percent[i].first << "% " <<
 		similarity_percent[i].second->get_username() << endl;
 }
@@ -103,8 +104,8 @@ bool recommended_songs::has_swap_condition(pair <double, user*> pre, pair <doubl
 
 vector <pair <double, user*>> recommended_songs::sort_similarity_percent(vector <pair <double, user*>> similarity_percent)
 {
-	for (int i = 0; i < similarity_percent.size(); i++) 
-		for (int j = i + 1; j < similarity_percent.size(); j++)
+	for (size_t i = 0; i < similarity_percent.size(); i++) 
+		for (size_t j = i + 1; j < similarity_percent.size(); j++)
 			if (has_swap_condition(similarity_percent[i], similarity_percent[j])) swap(similarity_percent[i], similarity_percent[j]);
 
 	return similarity_percent;
@@ -124,13 +125,15 @@ void recommended_songs::similar_users_function()
 	vector <vector <bool>> users_and_songs_matrix;
 	vector <vector <double>> users_similarity_matrix;
 
-	for (int i = 0; i < users.size(); i++)
+	for (size_t i = 0; i < users.size(); i++)
 		users_and_songs_matrix.push_back(make_list_of_liked_songs(users[i]));
 
-	for (int i = 0; i < users.size(); i++)
+	for (size_t i = 0; i < users.size(); i++)
 		users_similarity_matrix.push_back(make_list_of_front_side_users(i, users_and_songs_matrix));
 
-	int logged_in_user_num=find_logged_in_user();
+	int logged_in_user_num = find_logged_in_user();
+	if (logged_in_user_num == NOT_FOUND)
+		return;
 
 	vector <pair <double, user*>> similarity_percent=make_other_users_similarity_percent(logged_in_user_num,
 		users_similarity_matrix[logged_in_user_num]);
@@ -145,9 +148,9 @@ pair <song*, double> recommended_songs::calculate_confidence_one_by_one(int logg
 	song_confidence.first = songs[curr_song];
 	double confidence = 0;
 
-	for (int i = 0; i < users.size(); i++)
+	for (size_t i = 0; i < users.size(); i++)
 	{
-		if (users_and_songs_matrix[i][curr_song] && (i != logged_in_user_num))
+		if (users_and_songs_matrix[i][curr_song] && (static_cast<int>(i) != logged_in_user_num))
 			confidence += users_similarity_matrix[i];
 	}
 	song_confidence.second = confidence / (users.size() - 1);
@@ -168,8 +171,8 @@ bool recommended_songs::check_swap(pair <song*, double> pre, pair <song*, double
 
 vector <pair <song*, double>> recommended_songs::sort_recommended_songs(vector <pair <song*, double>> confidence)
 {
-	for (int i = 0; i < confidence.size(); i++)
-		for (int j = i + 1; j < confidence.size(); j++)
+	for (size_t i = 0; i < confidence.size(); i++)
+		for (size_t j = i + 1; j < confidence.size(); j++)
 			if (check_swap(confidence[i], confidence[j])) swap(confidence[i], confidence[j]);
 
 	return confidence;
@@ -185,7 +188,7 @@ vector <pair <song*, double>> recommended_songs::calculate_confidence(int logged
 {
 	vector <pair <song*, double>> confidence;
 
-	for (int i = 0; i < songs.size(); i++)
+	for (size_t i = 0; i < songs.size(); i++)
 	{
 		if(!is_song_liked(songs[i]))
 		confidence.push_back(calculate_confidence_one_by_one(logged_in_user_num, i, users_similarity_matrix, users_and_songs_matrix));
@@ -199,7 +202,7 @@ vector <pair <song*, double>> recommended_songs::calculate_confidence(int logged
 string recommended_songs::print_recommended_songs(const vector <pair <song*, double>>& songs_confidence)
 {
 	string body;
-	for(int i = 0; ((i < count) && (i != songs_confidence.size())); i++)
+	for (int i = 0; i < count && static_cast<size_t>(i) != songs_confidence.size(); i++)
 	{
 		body+=songs_confidence[i].first->get_recommended_song_info() + "<td>" + to_string(songs_confidence[i].second) + " % </td> <td>";
 		body+="<a href='song?id=";
@@ -214,13 +217,15 @@ string recommended_songs::recommeded_songs_function()
 	vector <vector <bool>> users_and_songs_matrix;
 	vector <vector <double>> users_similarity_matrix;
 
-	for (int i = 0; i < users.size(); i++)
+	for (size_t i = 0; i < users.size(); i++)
 		users_and_songs_matrix.push_back(make_list_of_liked_songs(users[i]));
 
-	for (int i = 0; i < users.size(); i++)
+	for (size_t i = 0; i < users.size(); i++)
 		users_similarity_matrix.push_back(make_list_of_front_side_users(i, users_and_songs_matrix));
 
 	int logged_in_user_num = find_logged_in_user();
+	if (logged_in_user_num == NOT_FOUND)
+		return "";
 
 	vector <pair <song*, double>> songs_confidence=calculate_confidence(logged_in_user_num,
 		users_similarity_matrix[logged_in_user_num], users_and_songs_matrix);

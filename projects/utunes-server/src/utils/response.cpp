@@ -68,7 +68,7 @@ void Response::setHeader(string name, string value) { headers[name] = value; }
 
 void Response::setBody(string _body) { body = _body; }
 
-string Response::getHeader(string name) { return ""; }
+string Response::getHeader(string) { return ""; }
 
 void Response::setSessionId(string sessionId) {
   setHeader("set-cookie", "sessionId=" + sessionId + ";");

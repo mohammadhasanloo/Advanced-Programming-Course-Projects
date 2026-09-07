@@ -26,7 +26,7 @@ bool playlist::show_a_user_playlists_name(bool can_show_private_playlist)
 
 void playlist::add_song_to_playlist(song* curr_song)
 {
-	for(int i=0;i<playlist_songs.size();i++)
+	for (size_t i = 0; i < playlist_songs.size(); i++)
 	{
 		if(curr_song==playlist_songs[i])
 			throw Server::Exception("Bad Request");
@@ -42,9 +42,9 @@ void playlist::check_access_to_playlist()
 
 void playlist::sort_by_id()
 {
-	for (int i = 0; i < playlist_songs.size(); i++)
+	for (size_t i = 0; i < playlist_songs.size(); i++)
 	{
-		for (int j = i + 1; j < playlist_songs.size(); j++)
+		for (size_t j = i + 1; j < playlist_songs.size(); j++)
 		{
 			if (playlist_songs[i]->get_id() > playlist_songs[j]->get_id())
 				swap(playlist_songs[i], playlist_songs[j]);
@@ -59,13 +59,13 @@ void playlist::show_songs_of_playlist()
 
 	sort_by_id();
 
-	for (int i = 0; i < playlist_songs.size(); i++)
+	for (size_t i = 0; i < playlist_songs.size(); i++)
 		playlist_songs[i]->show_song_info();
 }
 
 void playlist::delete_song_from_playlist(string curr_song_id)
 {
-	for (int i = 0; i < playlist_songs.size(); i++)
+	for (size_t i = 0; i < playlist_songs.size(); i++)
 	{
 		if (curr_song_id == playlist_songs[i]->get_id())
 		{
@@ -79,7 +79,7 @@ void playlist::delete_song_from_playlist(string curr_song_id)
 string playlist::get_songs_of_playlist()
 {
 	string body;
-	for(int i=0;i<playlist_songs.size();i++)
+	for (size_t i = 0; i < playlist_songs.size(); i++)
 	{
 		body+="<a href='song?id=";
 		body+=playlist_songs[i]->get_id();

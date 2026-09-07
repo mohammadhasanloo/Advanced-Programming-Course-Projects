@@ -69,6 +69,9 @@ public:
 	std::string get_liked_songs(std::string username);
 	std::string show_playlists(std::string username);
 	user* search_curr_user(std::string username);
+	// Whether a session name belongs to a real user. The session comes from a
+	// cookie the client controls, so it can name anybody or nobody at all.
+	bool is_known_user(std::string username);
 	std::vector <playlist*> get_intended_playlists(std::string curr_user);
 	std::string get_playlist_songs(std::string curr_playlist_id);
 	playlist* search_intended_playlist(std::string curr_playlist_id);

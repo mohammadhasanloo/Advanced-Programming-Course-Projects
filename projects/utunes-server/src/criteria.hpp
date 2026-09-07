@@ -10,6 +10,8 @@
 class criteria
 {
 public:
+	// Filters are held and deleted through this base pointer.
+	virtual ~criteria() = default;
 	virtual std::vector <song*> split_songs(std::vector <song*> intended_songs) = 0;
 };
 

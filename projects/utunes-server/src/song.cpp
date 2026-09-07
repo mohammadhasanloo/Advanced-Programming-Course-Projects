@@ -18,7 +18,7 @@ song::song(string _song_id, string _song_title, string _song_artist, string _son
 
 song::~song()
 {
-	for (int i = 0; i < comments.size(); i++)
+	for (size_t i = 0; i < comments.size(); i++)
 	{
 		comment* pre = comments[i];
 		comments[i] = nullptr;
@@ -120,9 +120,9 @@ void song::sort_comments_by_time(int pre,int curr)
 
 void song::sort_comments()
 {
-	for (int i = 0; i < comments.size(); i++)
+	for (size_t i = 0; i < comments.size(); i++)
 	{
-		for (int j = i + 1; j < comments.size(); j++)
+		for (size_t j = i + 1; j < comments.size(); j++)
 			sort_comments_by_time(i, j);
 	}
 }
@@ -134,7 +134,7 @@ void song::show_comments()
 
 	sort_comments();
 
-	for (int i = 0; i < comments.size(); i++)
+	for (size_t i = 0; i < comments.size(); i++)
 		comments[i]->show_comments();
 }
 
